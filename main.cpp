@@ -2,8 +2,26 @@
 
 using namespace std;
 
-int check(string word)
+int check(string word, string line)
 {
+
+	if(word == "cin") {
+		func_cin(line);
+	}
+	else if(word == "cout") {
+		func_cout(line);
+	}
+	else if(word == "return") {
+		fumc_return(line);
+	}
+	else if(data_type.find(word) != data_type.end()) {
+		func_dt(line);
+	}
+	else if(condition.find(word) != condition.end()) {
+		fumc_cond(line);
+	}
+	else if()
+
 
 }
 int main()
@@ -25,6 +43,7 @@ int main()
             word += line[i];
             i++;
         }
+        check(word, line);
 
        cout<<word<<"\n";
 
