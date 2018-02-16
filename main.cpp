@@ -8,10 +8,10 @@ void intialize()
     /* store the appropriate keyword in appropriate set*/
     data_type = {"int", "float", "string", "char", "double"};
     condition = {"if"};
-    loop = {"for", "while"};
+    loop = {"for", "while", "do"};
 }
 
-int check(string word, string line)
+void check(string word, string line)
 {
 
 	if(word == "cin") {
@@ -29,9 +29,84 @@ int check(string word, string line)
 	else if(condition.find(word) != condition.end()) {
 		fumc_cond(line);
 	}
-	else if()
+	else if(loop.find(word) != loop.end()) {
+		func_loop(line);
+	}
+	else {
+		cerr("Expand your code ;) ");   
+	}
 
 
+}
+
+void func_cin(string line) {
+
+	int i = 0;
+	while(i<line.size() && line[i]==' ') //Covering up the spaces
+            i++;
+    i = i + 3; // covering up 'cin' i.e 3 words;
+    int flag = 0;
+    cout << "Enter ";
+    string temp = "";
+ 	while(i < line.size()) {
+ 		while(line[i] == ' ')
+ 			i++;
+ 		temp += line[i];
+ 		if(temp == ">>") {
+ 			temp = "";
+ 			if(flag == 1) 
+ 				cout << "and ";
+ 			if(flag == 0)
+ 				flag = 1;
+ 		}
+ 		else if(temp == map.find(line[i])) { //map to be made
+ 			cout << map[line[i]] << line[i]; //This is to be edited.
+ 			temp = "";
+ 		}
+
+ 	}
+
+
+   
+}
+
+void func_cout(string line) {
+	int i = 0;
+	while(i<line.size() && line[i]==' ') //Covering up the spaces
+            i++;
+    i = i + 4; // covering up 'cout' i.e 4 words;
+    int flag = 0;
+    cout << "Print ";
+    string temp = "";
+    while(i < line.size()) {
+ 		while(line[i] == ' ')
+ 			i++;
+ 		temp += line[i];
+ 		if(temp == "<<") {
+ 			temp = "";
+ 			if(flag == 1) 
+ 				cout << "and ";
+ 			if(flag == 0)
+ 				flag = 1;
+ 		}
+ 		else if(temp == map.find(line[i])) { //map to be made
+ 			cout << map[line[i]] << line[i]; //This is to be edited.
+ 			temp = "";
+ 		}
+	
+}
+void func_return(string line) {
+	
+}
+void func_dt(string line) {
+	
+}
+void func_cond(string line) {
+	
+}
+
+void func_loop(string s) {
+	
 }
 
 int main()
