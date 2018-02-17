@@ -4,13 +4,14 @@ using namespace std;
 set<string>  data_type, condition, loop;
 set<char> useless, bracket;
 map<string, string> map_variable, keyword,condmap;
+int indent;
 
 void intialize()
 {
     /* store the appropriate keyword in appropriate set*/
     data_type = {"int", "float", "string", "char", "double"};
     useless = {'<', '>' , ';' , ',', ' ', '"' };
-    condition = {"if"};
+    condition = {"if", "else"};
     loop = {"for", "while", "do"};
     keyword = { {"int", "Integer"}, {"char", "Character"}, {"string", "String"}, {"float", "Float"}  };
     condmap = {{">"," greater "}, {"<", " less than "}, {"!=", " not equal "}, {"==", " equals "}, {">=", " greater than or equal to "}, {"<=", "less than or equal to"}};
@@ -24,7 +25,6 @@ void func_cin(string line) {
             i++;
     i = i + 3; // covering up 'cin' i.e 3 words;
     int flag = 0;
-    cout << "Enter ";
  	while(i < line.size())
     {
         string temp = "";
@@ -38,12 +38,12 @@ void func_cin(string line) {
             temp += line[i];
             i++;
         }
-        cout<< map_variable[temp]<<" " <<temp<<" ";
- 		//cout<<mymap[temp]<<" "<<temp<<" ";
+        for(int j=0; j<indent; j++)
+            cout<<"   ";
+        cout << "Enter ";
+        cout<< map_variable[temp]<<" " <<temp<<"\n";
 
  	}
- 	cout<<"\n";
-
 
 
 }
@@ -53,7 +53,6 @@ void func_cout(string line) {
 	while(i<line.size() && line[i]==' ') //Covering up the spaces
             i++;
     i = i + 4; // covering up 'cin' i.e 3 words;
-    cout << "Prints ";
  	while(i < line.size())
     {
         string temp = "";
@@ -67,18 +66,23 @@ void func_cout(string line) {
             temp += line[i];
             i++;
         }
-        cout<< map_variable[temp]<<" "<<temp<<" "; //to be changed
- 		//cout<<mymap[temp]<<" "<<temp<<" ";
+        for(int j=0; j<indent; j++)
+            cout<<"   ";
+        cout << "Print ";
+        cout<< map_variable[temp]<<" "<<temp<<"\n";
 
  	}
- 	cout << endl;
+
 }
 
-void func_return(string line) {
+void func_return(string line)
+{
 	int i = 0;
 	while(i<line.size() && line[i]==' ') //Covering up the spaces
             i++;
-    cout << "Returns " ;
+    for(int j=0; j<indent; j++)
+            cout<<"   ";
+    cout << "function Returns " ;
     i = i + 6; //covering up return
     string temp;
     while(i < line.size() && useless.find(line[i])!=useless.end())
@@ -123,6 +127,8 @@ void func_dt(string line)
         }
         if(detect_function)
         {
+            for(i=0; i<indent; i++)
+                cout<<"   ";
             cout<<"Declare Function "<<temp<<"\n";
             break;
         }
@@ -133,35 +139,84 @@ void func_dt(string line)
 
     if(!var_name.empty())
     {
-        cout<<"Declare "<<var_name.size()<<" variable ";
+        for(i=0; i<indent; i++)
+            cout<<"   ";
+        cout<<"Declare "<<var_name.size()<<" "<<keyword[Data_type]<<" variable ";
         for(auto value: var_name)
             cout<<value<<" ";
         cout<<"\n";
     }
 
-    //cout<<"This is data type : "<<Data_type<<"\n";
 
 }
 
-void func_cond(string line) {
-
+void func_cond(string line)
+{
 	int i = 0;
-	while(i<line.size() && line[i]==' ') //Covering up the spaces
+	for(int j=0; j<indent; j++)
+            cout<<"   ";
+	while(line[i]!='(')
             i++;
-    while(i < line.size() && bracket.find(line[i]) != bracket.end())
-    	i++;
-
+    i++;
+    cout<<"Check if ";
+    while(line[i] != ')')
+    {
+        cout<<line[i];
+        i++;
+    }
+    cout<<"\n";
+    for(int j=0; j<indent+1; j++)
+            cout<<"   ";
+    cout<<"If True then : ";
+    cout<<"\n";
 
 
 }
 
-void func_loop(string s) {
+void func_loop(string line)
+{
+    int i=0;
+   for(int j=0; j<indent; j++)
+        cout<<"   ";
+    cout<<"Start a loop from ";
+    while(line[i]!='(')
+        i++;
+    i++;
+    while(line[i]!=';')
+    {
+        cout<<line[i];
+        i++;
+    }
+    i++;
+    cout<<" till ";
+    while(line[i]!=';')
+    {
+        cout<<line[i];
+        i++;
+    }
+    cout<<"\n";
+}
 
+void func_oper(string line)
+{
+   int i=0;
+   for(int j=0; j<indent; j++)
+        cout<<"   ";
+    cout<<"Perform operation: ";
+    string temp="";
+    while(line[i]==' ')
+            i++;
+
+    while(i<line.size() && (!(useless.find(line[i])!=useless.end()) || line[i]==' '))
+    {
+        temp += line[i];
+        i++;
+    }
+    cout<<temp<<"\n";
 }
 
 void check(string word, string line)
 {
-    cout<<word<<"\n";
 	if(word == "cin") {
 		func_cin(line);
 	}
@@ -175,11 +230,15 @@ void check(string word, string line)
 		func_dt(line);
 	}
 	else if(condition.find(word) != condition.end()) {
-		//func_cond(line);
+		func_cond(line);
 	}
 	else if(loop.find(word) != loop.end()) {
-		//func_loop(line);
+		func_loop(line);
 	}
+	else if(map_variable.find(word) != map_variable.end())
+    {
+        func_oper(line);
+    }
 	else {
 		//cout<<"Expand your code \n";
 	}
@@ -207,9 +266,19 @@ int main()
             word += line[i];
             i++;
         }
+
+        if(word=="{")
+        {
+            indent++;
+            continue;
+        }
+        if(word=="}")
+        {
+            indent--;
+            continue;
+        }
         check(word, line);
 
-       //cout<<word<<"\n";
 
     }
 
