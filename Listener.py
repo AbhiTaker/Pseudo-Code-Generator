@@ -19,8 +19,8 @@ def docsTxt(file_path):
     string_words = getTextTxt(file_path)
     print(string_words)
     tts = gTTS(text=string_words, lang='en')
-    tts.save("C:/Users/ranjan/Desktop/listen_pdf.mp3")
-    os.system("mpg321 C:/Users/ranjan/Desktop/listen_pdf.mp3")
+    tts.save("C:/Users/hp 74tu/Desktop/source_code_voice_over.mp3")
+    os.system("mpg321 C:/Users/hp 74tu/Desktop/source_code_voice_over.mp3")
 
 
 @app.route('/')

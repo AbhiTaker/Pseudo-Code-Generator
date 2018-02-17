@@ -5,6 +5,7 @@ set<string>  data_type, condition, loop;
 set<char> useless, bracket;
 map<string, string> map_variable, keyword,condmap;
 int indent;
+ofstream outFile("output.txt", ios::out);
 
 void intialize()
 {
@@ -39,8 +40,13 @@ void func_cin(string line) {
             i++;
         }
         for(int j=0; j<indent; j++)
+        {
+            outFile<<"   ";
             cout<<"   ";
-        cout << "Enter ";
+        }
+        outFile<< "Enter ";
+        cout<< "Enter ";
+        outFile<< map_variable[temp]<<" " <<temp<<"\n";
         cout<< map_variable[temp]<<" " <<temp<<"\n";
 
  	}
@@ -67,8 +73,13 @@ void func_cout(string line) {
             i++;
         }
         for(int j=0; j<indent; j++)
+        {
+            outFile<<"   ";
             cout<<"   ";
+        }
+        outFile << "Print ";
         cout << "Print ";
+        outFile<< map_variable[temp]<<" "<<temp<<"\n";
         cout<< map_variable[temp]<<" "<<temp<<"\n";
 
  	}
@@ -81,13 +92,18 @@ void func_return(string line)
 	while(i<line.size() && line[i]==' ') //Covering up the spaces
             i++;
     for(int j=0; j<indent; j++)
-            cout<<"   ";
+    {
+        outFile<<"   ";
+        cout<<"   ";
+    }
+    outFile << "function Returns " ;
     cout << "function Returns " ;
     i = i + 6; //covering up return
     string temp;
     while(i < line.size() && useless.find(line[i])!=useless.end())
  			i++;
  	temp = line[i];
+ 	outFile << temp << "\n";
  	cout << temp << "\n";
 }
 
@@ -128,7 +144,11 @@ void func_dt(string line)
         if(detect_function)
         {
             for(i=0; i<indent; i++)
+            {
+                outFile<<"   ";
                 cout<<"   ";
+            }
+            outFile<<"Declare Function "<<temp<<"\n";
             cout<<"Declare Function "<<temp<<"\n";
             break;
         }
@@ -140,10 +160,18 @@ void func_dt(string line)
     if(!var_name.empty())
     {
         for(i=0; i<indent; i++)
+        {
+            outFile<<"   ";
             cout<<"   ";
+        }
+        outFile<<"Declare "<<var_name.size()<<" "<<keyword[Data_type]<<" variable ";
         cout<<"Declare "<<var_name.size()<<" "<<keyword[Data_type]<<" variable ";
         for(auto value: var_name)
+        {
+            outFile<<value<<" ";
             cout<<value<<" ";
+        }
+        outFile<<"\n";
         cout<<"\n";
     }
 
@@ -154,19 +182,30 @@ void func_cond(string line)
 {
 	int i = 0;
 	for(int j=0; j<indent; j++)
-            cout<<"   ";
+    {
+        outFile<<"   ";
+        cout<<"   ";
+    }
 	while(line[i]!='(')
             i++;
     i++;
+    outFile<<"Check if ";
     cout<<"Check if ";
     while(line[i] != ')')
     {
+        outFile<<line[i];
         cout<<line[i];
         i++;
     }
+    outFile<<"\n";
     cout<<"\n";
     for(int j=0; j<indent+1; j++)
-            cout<<"   ";
+    {
+        outFile<<"   ";
+        cout<<"   ";
+    }
+    outFile<<"If True then : ";
+    outFile<<"\n";
     cout<<"If True then : ";
     cout<<"\n";
 
@@ -177,23 +216,31 @@ void func_loop(string line)
 {
     int i=0;
    for(int j=0; j<indent; j++)
+    {
+        outFile<<"   ";
         cout<<"   ";
+    }
+    outFile<<"Start a loop from ";
     cout<<"Start a loop from ";
     while(line[i]!='(')
         i++;
     i++;
     while(line[i]!=';')
     {
+        outFile<<line[i];
         cout<<line[i];
         i++;
     }
     i++;
+    outFile<<" till ";
     cout<<" till ";
     while(line[i]!=';')
     {
+        outFile<<line[i];
         cout<<line[i];
         i++;
     }
+    outFile<<"\n";
     cout<<"\n";
 }
 
@@ -201,7 +248,11 @@ void func_oper(string line)
 {
    int i=0;
    for(int j=0; j<indent; j++)
+    {
+        outFile<<"   ";
         cout<<"   ";
+    }
+    outFile<<"Perform operation: ";
     cout<<"Perform operation: ";
     string temp="";
     while(line[i]==' ')
@@ -212,6 +263,7 @@ void func_oper(string line)
         temp += line[i];
         i++;
     }
+    outFile<<temp<<"\n";
     cout<<temp<<"\n";
 }
 
@@ -283,6 +335,7 @@ int main()
     }
 
     inFile.close();
+    outFile.close();
 
     return 0;
 }
