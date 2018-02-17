@@ -16,3 +16,5 @@ The code works as follows:
 *name of audio file is source_code_voice_over.mp3
 
 Note : The code written only generates a pseudo code which has limited functionalities till now. To improve this please contribute to this repo:).
+
+USE: Can be used by people who are visually impaired and learning to program. Till now it is not a production ready code.
