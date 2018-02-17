@@ -7,7 +7,7 @@ map<string, string> map_variable, keyword,condmap;
 int indent;
 ofstream outFile("output.txt", ios::out);
 
-void intialize()
+void intialize()	//Create mapping for different elements of code i.e variables, datatypes, words that are of no use etc.
 {
     /* store the appropriate keyword in appropriate set*/
     data_type = {"int", "float", "string", "char", "double"};
@@ -19,7 +19,7 @@ void intialize()
     bracket = {'(', ')', '{', '}'};
 }
 
-void func_cin(string line) {
+void func_cin(string line) { //Create pseudo code for 'cin'
 
 	int i = 0;
 	while(i<line.size() && useless.find(line[i])!=useless.end()) //Covering up the spaces
@@ -54,7 +54,7 @@ void func_cin(string line) {
 
 }
 
-void func_cout(string line) {
+void func_cout(string line) {	 //Create pseudo code for 'cout'
 	int i = 0;
 	while(i<line.size() && line[i]==' ') //Covering up the spaces
             i++;
@@ -86,7 +86,7 @@ void func_cout(string line) {
 
 }
 
-void func_return(string line)
+void func_return(string line)	//Create pseudo code for 'return' statement for a function including 'main' as well
 {
 	int i = 0;
 	while(i<line.size() && line[i]==' ') //Covering up the spaces
@@ -107,7 +107,7 @@ void func_return(string line)
  	cout << temp << "\n";
 }
 
-void func_dt(string line)
+void func_dt(string line)	//Mapping of varaibles to their data types.
 {
     int i = 0;
 	while(i<line.size() && useless.find(line[i])!=useless.end()) //Covering up the spaces
@@ -197,7 +197,7 @@ void func_dt(string line)
 
 }
 
-void func_cond(string line)
+void func_cond(string line)	//Generatting Pseudo code for conditions like if. (currently only if), else can be included later on.
 {
 	int i = 0;
 	for(int j=0; j<indent; j++)
@@ -231,7 +231,7 @@ void func_cond(string line)
 
 }
 
-void func_loop(string line)
+void func_loop(string line)	//Create pseudo code for loops like for, while etc
 {
     int i=0;
    for(int j=0; j<indent; j++)
@@ -263,7 +263,7 @@ void func_loop(string line)
     cout<<"\n";
 }
 
-void func_oper(string line)
+void func_oper(string line)	//Create pseudo code for different operations
 {
    int i=0;
    for(int j=0; j<indent; j++)
@@ -286,7 +286,7 @@ void func_oper(string line)
     cout<<temp<<"\n";
 }
 
-void check(string word, string line)
+void check(string word, string line) 	//Checking for various conditions.
 {
 	if(word == "cin") {
 		func_cin(line);
@@ -319,7 +319,7 @@ void check(string word, string line)
 
 int main()
 {
-    ifstream inFile("prog.cpp");
+    ifstream inFile("prog.cpp");	//Input file containing Pseudo code
     intialize();
     string line;
     int i = 0;
