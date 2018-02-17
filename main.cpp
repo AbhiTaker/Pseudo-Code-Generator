@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 
 using namespace std;
-set<string>  data_type, condition, loop;
+set<string>  data_type, condition, loop, Array;
 set<char> useless, bracket;
 map<string, string> map_variable, keyword,condmap;
 int indent;
@@ -11,7 +11,7 @@ void intialize()
 {
     /* store the appropriate keyword in appropriate set*/
     data_type = {"int", "float", "string", "char", "double"};
-    useless = {'<', '>' , ';' , ',', ' ', '"' };
+    useless = {'<', '>' , ';' , ',', ' ', '"' , '(' };
     condition = {"if", "else"};
     loop = {"for", "while", "do"};
     keyword = { {"int", "Integer"}, {"char", "Character"}, {"string", "String"}, {"float", "Float"}  };
@@ -119,7 +119,7 @@ void func_dt(string line)
         Data_type += line[i];
         i++;
     }
-    int ctr = 0;
+    int ctr = 0, check_array = 0;
     vector<string> var_name;
 
     while(i < line.size())
@@ -131,8 +131,14 @@ void func_dt(string line)
         if(i>=line.size())
             break;
         int detect_function = 0;
-        while(i<line.size() && !(useless.find(line[i])!=useless.end()))
+        while(i<line.size() && (!(useless.find(line[i])!=useless.end()) || line[i]=='('))
         {
+            if(line[i]=='[')
+            {
+                i+=2;
+                check_array = 1;
+                break;
+            }
             if(line[i]=='(')
             {
                 detect_function = 1;
@@ -143,7 +149,7 @@ void func_dt(string line)
         }
         if(detect_function)
         {
-            for(i=0; i<indent; i++)
+            for(int j=0; j<indent; j++)
             {
                 outFile<<"   ";
                 cout<<"   ";
@@ -153,6 +159,19 @@ void func_dt(string line)
             break;
         }
 
+        if(check_array)
+        {
+            for(int j=0; j<indent; j++)
+            {
+                outFile<<"   ";
+                cout<<"   ";
+            }
+            map_variable[temp] = keyword[Data_type];
+            outFile<<"Declare 1 "<<keyword[Data_type]<<" Array "<<temp<<"\n";
+            cout<<"Declare 1 "<<keyword[Data_type]<<" Array "<<temp<<"\n";
+            check_array = 0;
+            continue;
+        }
         map_variable[temp] = keyword[Data_type];
         var_name.push_back(temp);
     }
@@ -310,15 +329,14 @@ int main()
        getline(inFile, line);
        i = 0;
        string word = "";
-        while(i<line.size() && line[i]==' ')
+        while(i<line.size() && ((useless.find(line[i])!=useless.end())) )
             i++;
 
-       while(i<line.size() && line[i]!=' ')
+       while(i<line.size() && !(useless.find(line[i])!=useless.end()) )
         {
             word += line[i];
             i++;
         }
-
         if(word=="{")
         {
             indent++;
@@ -336,6 +354,7 @@ int main()
 
     inFile.close();
     outFile.close();
+
 
     return 0;
 }

@@ -1,0 +1,13 @@
+Declare Function main
+   Declare 1 Integer Array arr
+   Declare 3 Integer variable num num2 i 
+   Declare 1 String variable str 
+   Enter Integer num
+   Enter Integer num2
+   Enter String str
+   Check if  num== num2
+      If True then : 
+      Print  Numbers_are_equal
+   Start a loop from i=0 till  i<num
+      Print String str
+   function Returns 0
