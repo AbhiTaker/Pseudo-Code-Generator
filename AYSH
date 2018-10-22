@@ -1,0 +1,32 @@
+#include<stdio.h>
+int main ()
+{
+      int i, currLen, longest = 0;
+      char current, s[100];
+      
+      printf("Enter the string: ");
+      gets(s);
+      
+      for (i=0; s[i]!= '\0'; )
+      {
+          current = s[i];
+          currLen = 0;
+          
+            for(; s[i]!='\0' && current == s[i]; i++)
+            {
+                
+                if(current == 65)
+                {
+                    currLen++;
+                  }
+              }
+              
+              if(currLen > longest)
+              longest = currLen ;
+        }
+        
+        printf("The occurence of A in the given string is: %d", longest);
+        return 0;
+          
+      
+}
